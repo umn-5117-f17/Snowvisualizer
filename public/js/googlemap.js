@@ -125,3 +125,7 @@ var mapStyle = [{
   'elementType': 'geometry',
   'stylers': [{'visibility': 'on'}, {'hue': '#5f94ff'}, {'lightness': 60}]
 }];
+
+var mapsAPI='AIzaSyAyZrx9EmwScpARmLLJLRYgNv1L53v2n0g';
+$.getScript('https://maps.google.com/maps/api/js?key=' + mapsAPI).done(function(){initMap()});
+});
