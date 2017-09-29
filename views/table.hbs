@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <title>FusionCharts Sample</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/bulma.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/base.css">
+</head>
+
+
+<body>
+    <div class="container">
+      {{{body}}}
+    </div>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js" charset="utf-8"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.0/handlebars.js"></script>
+    <script>
+      var state = "{{ state }}" ; var year = "{{ year }}" ;  var month = "{{ month }}";
+    </script>
+    <script type="text/javascript" src="/js/fusioncharts.js"></script>
+    <script type="text/javascript" src="/js/fusioncharts-jquery-plugin.js"></script>
+    <script src="/js/table.js" charset="utf-8"></script>
+      <div class="container">
+        <div class="columns is-vcentered">
+          <div class="column is-8 is-offset-0"> <br/><br/><br/>Description : <h1 id="description"></h1><br/>
+              <input type="text" class="input" id="search" placeholder="  live search on Station name"></input><br/><br/><br/>
+              <table class="table is-striped is-bordered is-narrow" id="table">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>Station Name</th>
+                    <th>Average Snowfall</th>
+                    <th>Maximum Snowfall</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr id="test">
+                    </tr>
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+</body>
+</html>
