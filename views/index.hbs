@@ -1,2 +1,92 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register - Free Bulma template</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="../stylesheets/bulma.css">
+  <link rel="stylesheet" type="text/css" href="../stylesheets/base.css">
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js" charset="utf-8"></script>
+  <script src="/js/index.js" charset="utf-8"></script>
+</head>
+<body>
+  <section class="hero is-fullheight is-dark is-bold">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns is-vcentered">
+          <div class="column is-4 is-offset-4">
+            <h1 class="title">
+              <center>Daily snow observations from GHCN stations</center>
+            </h1>
+            <div class="box">
+            <form action="/submit" method="post">
+            <div class="field">
+              <label class="label">State</label>
+                <div class="control">
+                <div class="select">
+                  <select name="state">
+                    <option>Select State</option>
+                    {{#each states}}
+                      <option value="{{abbreviation}}">{{name}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+                <label class="label">Year</label>
+                <div class="control">
+                <div class="select">
+                  <select  name="year" id="year" >  //onchange="setDays(month,day,this)"
+                    <option value="">Select Year</option>
+                    <option value="2015">2015</option>
+                    <option value="2016">2016</option>
+                    <option value="2017">2017</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+                <label class="label">Month</label>
+                <div class="control">
+                <div class="select">
+                  <select  name="month" id="month">   //onchange="setDays(this,day,year)"
+                    <option value="">Select Month</option>
+                    {{#each Month}}
+                      <option value="{{Number}}">{{Name}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!--
+                <label class="label">Day</label>
+                <div class="control">
+                <div class="select">
+                  <select name="day" id="day" onchange="setDays(month,this,year)">
+                    <option value="">Select Day</option>
+                    {{#each Day}}
+                      <option value="{{value}}">{{number}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+              </div> -->
+              <p class="control">
+                <center><input type="submit" class="button is-primary">Search</input></center>
+              </p>
+            </div>
+          </form>
+            <p class="has-text-centered">
+              Access to these data supports the Federal Emergency Management Agency's need for near real-time observations used in assessing requests for disaster assistance. Values are in inches (M represents missing data, T represents trace values).
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</body>
+</html>
