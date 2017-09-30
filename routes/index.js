@@ -12,7 +12,7 @@ router.get('/map', function(req, res, next) {
 
 router.post('/submit',  function(req, res, next){
   console.log(req);
-  res.render('graph',  { state : req.body.state , year : req.body.year, month :req.body.month });
+  res.render('graph',  { state1 : req.body.state1 ,  state2 : req.body.state2, year : req.body.year, month :req.body.month });
 });
 
 module.exports = router;

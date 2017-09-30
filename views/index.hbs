@@ -23,11 +23,24 @@
             <div class="box">
             <form action="/submit" method="post">
             <div class="field">
-              <label class="label">State</label>
+              <label class="label">State 1</label>
                 <div class="control">
                 <div class="select">
-                  <select name="state">
-                    <option>Select State</option>
+                  <select name="state1">
+                    <option>Select State 1</option>
+                    {{#each states}}
+                      <option value="{{abbreviation}}">{{name}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">State 2</label>
+                <div class="control">
+                <div class="select">
+                  <select name="state2">
+                    <option>Select State 2</option>
                     {{#each states}}
                       <option value="{{abbreviation}}">{{name}}</option>
                     {{/each}}
