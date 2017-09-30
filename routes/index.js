@@ -6,6 +6,10 @@ router.get('/', function(req, res, next) {
   res.render('index', data);
 });
 
+router.get('/rangeSlider', function(req, res, next) {
+  res.render('rangeSlider',{ title: 'Express' });
+});
+
 router.get('/map', function(req, res, next) {
   res.render('googlemap', { title: 'Express' });
 });

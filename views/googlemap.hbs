@@ -5,14 +5,49 @@
     <meta name="viewport" content="initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
     <script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="../stylesheets/bulma.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/base.css">
+    <script src="/js/googlemap.js" charset="utf-8"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <!-- Slider scripts -->
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/d3.slider.css">
+    <script src="/js/d3.slider.js"></script>
+    <script src="/js/rangeSlider.js"></script>
   </head>
   <body id="map-container">
-    <div id="map"></div>
-    <script src="/js/googlemap.js" charset="utf-8"></script>
 
-    <!-- <script  defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyZrx9EmwScpARmLLJLRYgNv1L53v2n0g&callback=initMap">
-    </script> -->
+    <div class="tile is-vertical ">
+      <div class="tile is-horizontal ">
+        <!-- the left side tile -->
+        <div class="tile is-parent is-vertical is-gap">
+          <article class="tile is-child notification is-info">
+            <p class="title">Minnesota</p>
+            <p class="subtitle">Winter is coming</p>
+             <div class="tile is-child"><figure class = "image is-4by3" id="map"></figure></div>
+           </article>
+        </div>
+        <!-- the right side tile -->
+        <div class="tile is-parent is-vertical is-gap">
+          <article class="tile is-child notification is-info">
+            <p class="title">Wisconsin</p>
+            <p class="subtitle">Winter is coming</p>
+             <div class="tile is-child"><figure class = "image is-4by3" id="map2"></figure></div>
+           </article>
+        </div>
+
+      </div>
+      <!-- the bottom tile -->
+      <div class="tile is-parent">
+        <article class="tile is-child notification is-danger">
+          <p class="title">Date Selector</p>
+          <p class="subtitle">with event, values: <span id="slider3textmin">1</span>, <span id="slider3textmax">31</span></p>
+            <div id="slider3"></div>
+        </article>
+      </div>
+
+    </div>
+
+
   </body>
 </html>
