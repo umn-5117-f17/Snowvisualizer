@@ -16,11 +16,7 @@ router.get('/map', function(req, res, next) {
 
 router.post('/submit',  function(req, res, next){
   console.log(req);
-<<<<<<< HEAD
-  res.render('graph',  { state1 : req.body.state1 ,  state2 : req.body.state2, year : req.body.year, month :req.body.month });
-=======
-  res.render('table',  { state : req.body.state , year : req.body.year, month :req.body.month });
->>>>>>> 13b91b88cc40570ef429f9ffd4b4e8e4d2c06dbe
+  res.render('table',  { state1 : req.body.state1 ,  state2 : req.body.state2, year : req.body.year, month :req.body.month });
 });
 
 module.exports = router;
