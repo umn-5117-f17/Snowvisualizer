@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../stylesheets/base.css">
     <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
 </head>
+<<<<<<< HEAD:views/graph.hbs
 <nav class="nav">
   <div class="nav-left">
     <a class="nav-item">
@@ -44,6 +46,10 @@
 
   </div>
 </nav>
+=======
+
+
+>>>>>>> 13b91b88cc40570ef429f9ffd4b4e8e4d2c06dbe:views/table.hbs
 <body>
     <div class="container">
       {{{body}}}
@@ -57,6 +63,7 @@
     <script>
       var state1 = "{{ state1 }}" ; var state2 = "{{ state2 }}"; var year = "{{ year }}" ;  var month = "{{ month }}";
     </script>
+<<<<<<< HEAD:views/graph.hbs
     <script src="/js/main.js" charset="utf-8"></script>
     <div class="columns">
          <div class="column">
@@ -107,5 +114,31 @@
            </div>
          </div>
     </div>
+=======
+    <script type="text/javascript" src="/js/fusioncharts.js"></script>
+    <script type="text/javascript" src="/js/fusioncharts-jquery-plugin.js"></script>
+    <script src="/js/table.js" charset="utf-8"></script>
+      <div class="container">
+        <div class="columns is-vcentered">
+          <div class="column is-8 is-offset-0"> <br/><br/><br/>Description : <h1 id="description"></h1><br/>
+              <input type="text" class="input" id="search" placeholder="  live search on Station name"></input><br/><br/><br/>
+              <table class="table is-striped is-bordered is-narrow" id="table">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>Station Name</th>
+                    <th>Average Snowfall</th>
+                    <th>Maximum Snowfall</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr id="test">
+                    </tr>
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+>>>>>>> 13b91b88cc40570ef429f9ffd4b4e8e4d2c06dbe:views/table.hbs
 </body>
 </html>

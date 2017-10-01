@@ -3,189 +3,50 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0" />
-    <style type="text/css">
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
     <script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/bulma.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/base.css">
+    <script src="/js/googlemap.js" charset="utf-8"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <!-- Slider scripts -->
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/d3.slider.css">
+    <script src="/js/d3.slider.js"></script>
+    <script src="/js/rangeSlider.js"></script>
   </head>
   <body id="map-container">
-    <div id="map"></div>
-    <script>
-      var map;
 
-      function initMap() {
-        var myCenter = {lat: 46.413, lng: -94.504};
+    <div class="tile is-vertical ">
+      <div class="tile is-horizontal ">
+        <!-- the left side tile -->
+        <div class="tile is-parent is-vertical is-gap">
+          <article class="tile is-child notification is-info">
+            <p class="title">Minnesota</p>
+            <p class="subtitle">Winter is coming</p>
+             <div class="tile is-child"><figure class = "image is-4by3" id="map"></figure></div>
+           </article>
+        </div>
+        <!-- the right side tile -->
+        <div class="tile is-parent is-vertical is-gap">
+          <article class="tile is-child notification is-info">
+            <p class="title">Wisconsin</p>
+            <p class="subtitle">Winter is coming</p>
+             <div class="tile is-child"><figure class = "image is-4by3" id="map2"></figure></div>
+           </article>
+        </div>
 
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: myCenter,
-          zoom: 6,
-          styles: mapStyle
-        });
+      </div>
+      <!-- the bottom tile -->
+      <div class="tile is-parent">
+        <article class="tile is-child notification is-danger">
+          <p class="subtitle">Date Selector (values): <span id="slider3textmin">1</span>, <span id="slider3textmax">31</span></p>
+          <div class = "tile is-child"><figure  id="slider3"></figure></div>
+        </article>
+      </div>
 
-        map.data.setStyle(styleFeature);
-
-        // Get the earthquake data (JSONP format)
-        // This feed is a copy from the USGS feed, you can find the originals here:
-        //   http://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
-        var script = document.createElement('script');
-
-        // for parse json data to a new format
-        var snowUrl = "https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/MN-snowfall-201612.json";
-        $.ajax({
-            type: "get",
-            url: snowUrl,
-            dataType: "json",
-            jsonp:"callback",
-            success: function (data) {
-                dataSource = data.data;
-                dataDesc = data.description;
-                snowDisp = parseSnowData(dataSource);
-
-                var testSnow = snowDisp;
-                var test = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,61.5171]}},{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,63]}}]}';
-                // testSnow = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"mag":5}, "geometry":{"type":"Point","coordinates":[47.30,-6.52]}},{"type":"Feature","properties":{"mag":3}, "geometry":{"type":"Point","coordinates":[44.92,-95]}}]}';
-
-                // console.log("testSnow: " + testSnow);
-                // console.log("test: " + test);
-
-                var testJson = JSON.parse(testSnow);
-                var jData = eqfeed_callback(testJson);
-                // var jData = eqfeed_callback(snowDispJson);
-                console.log(testJson["features"]);
-                // console.log("jData: " + jData["type"] + snowDispJson["type"]);
-
-                script.setAttribute(
-                    'src',
-                    jData);
-                document.getElementsByTagName('head')[0].appendChild(script);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert(errorThrown);
-            }
-        });
-      }
-
-      // function for parsing snowdata to geo map format
-      function parseSnowData(dataSource) {
-        var maxSnowF = 0;
-        $.each(dataSource, function(i, n){
-            $.each(n["values"], function(j, m){
-                // console.log("maxsnowf: " + m);
-                maxSnowF = parseFloat(m)>maxSnowF ? parseFloat(m) : maxSnowF;
-            });
-        });
-
-        console.log("maxsnowf: " + maxSnowF);
+    </div>
 
 
-        var snowMapJson = '{"type":"FeatureCollection","features":[';
-        var day = 9;
-        var ii = 0;
-        var i1 = 0, i2 = 0, i3 = 0;
-        $.each(dataSource, function(i, n){
-            // console.log(n["values"][day]);
-            var magVal = parseFloat(n["values"][day]);
-            if(isNaN(magVal)){
-                magVal = 0.0;
-            }
-            if(magVal<1) i1++;
-            else if(magVal>=1 && magVal<5) i2++;
-            else if(magVal>5) i3++;
-
-            // magVal = magVal/maxSnowF * 3 + 1.5;
-            // magVal = magVal/maxSnowF < 0.5 ? magVal/maxSnowF*3+1.5 : magVal/maxSnowF*3+3;
-            magVal = magVal*3 + 2;
-
-            // console.log(i + " index: " + n["station_name"] + n["lat"] + n["lon"]);
-            snowMapJson += '{"type":"Feature","properties":{"mag":' + magVal + '}, "geometry":{"type":"Point","coordinates":[' + n["lon"] + "," + n["lat"] + ']}},';
-            ii++;
-            if(ii==2000) return false;
-        });
-        console.log(i1 + "---" + i2 + '----' + i3);
-
-        snowMapJson = snowMapJson.substring(0, snowMapJson.length-1);
-        snowMapJson += ']}'
-
-        // snowMapJson = "'" + snowMapJson + "'"
-
-        // transfrom string -> json
-        // var jsonObj = JSON.parse(snowMapJson);
-        // console.log("successfully json!! " + jsonObj["type"]);
-
-        return snowMapJson;
-      }
-
-      // Defines the callback function referenced in the jsonp file.
-      function eqfeed_callback(data) {
-        map.data.addGeoJson(data);
-      }
-
-      function styleFeature(feature) {
-        var low = [151, 83, 34];   // color of mag 1.0
-        var high = [5, 69, 54];  // color of mag 6.0 and above
-        var minMag = 1.0;
-        var maxMag = 6.0;
-
-        // fraction represents where the value sits between the min and max
-        var fraction = (Math.min(feature.getProperty('mag'), maxMag) - minMag) /
-            (maxMag - minMag);
-
-        var color = interpolateHsl(low, high, fraction);
-
-        return {
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            strokeWeight: 0.5,
-            strokeColor: '#fff',
-            fillColor: color,
-            fillOpacity: 2 / feature.getProperty('mag'),
-            // while an exponent would technically be correct, quadratic looks nicer
-            scale: Math.pow(feature.getProperty('mag'), 2)
-          },
-          zIndex: Math.floor(feature.getProperty('mag'))
-        };
-      }
-
-      function interpolateHsl(lowHsl, highHsl, fraction) {
-        var color = [];
-        for (var i = 0; i < 3; i++) {
-          // Calculate color based on the fraction.
-          color[i] = (highHsl[i] - lowHsl[i]) * fraction + lowHsl[i];
-        }
-
-        return 'hsl(' + color[0] + ',' + color[1] + '%,' + color[2] + '%)';
-      }
-
-      var mapStyle = [{
-        'featureType': 'all',
-        'elementType': 'all',
-        'stylers': [{'visibility': 'off'}]
-      }, {
-        'featureType': 'landscape',
-        'elementType': 'geometry',
-        'stylers': [{'visibility': 'on'}, {'color': '#fcfcfc'}]
-      }, {
-        'featureType': 'water',
-        'elementType': 'labels',
-        'stylers': [{'visibility': 'off'}]
-      }, {
-        'featureType': 'water',
-        'elementType': 'geometry',
-        'stylers': [{'visibility': 'on'}, {'hue': '#5f94ff'}, {'lightness': 60}]
-      }];
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyZrx9EmwScpARmLLJLRYgNv1L53v2n0g&callback=initMap">
-    </script>
   </body>
 </html>
