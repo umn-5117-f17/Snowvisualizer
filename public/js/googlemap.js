@@ -47,7 +47,7 @@ function initMap() {
   // initializeCenter("Minnesota","Wisconsin");
   initializeCenter(state1,state2);
 
-  function addStyleToMap(mapLabel,center,url){
+  function addStyleToMap(stateNo, mapLabel, center, url){
     var map;
 
     map = new google.maps.Map(document.getElementById(mapLabel), {
@@ -61,7 +61,7 @@ function initMap() {
           infowindow.close();
       });
 
-     populateMap(map,url,1,28);
+     populateMap(stateNo, map,url,1,28);
      map.data.addListener('click', function(event) {
        var myHTML = event.feature.getProperty("stationName");
        infowindow.close();
@@ -77,7 +77,7 @@ function initMap() {
      map.data.addGeoJson(data);
    }
 
-  function populateMap(map,url,begindate,enddate){
+  function populateMap(stateNo, map,url,begindate,enddate){
     var snowUrl = url;
     var map = map;
     $.ajax({
@@ -88,6 +88,8 @@ function initMap() {
         success: function (data) {
             dataSource = data.data;
             dataDesc = data.description;
+            var description = (stateNo == 1) ?  $("#description1") :  $("#description2");
+            description.text(data.description.title) ;
             snowDisp = parseSnowData(dataSource,begindate,enddate);
             var testSnow = snowDisp;
             //var test = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,61.5171]}},{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,63]}}]}';
@@ -177,7 +179,7 @@ function initMap() {
             var center=JsonlatlongObject;
             var url1 = "https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/"+state1+"-snowfall-"+year+month+".json";
             console.log(url1);
-            addStyleToMap('map',center,url1);
+            addStyleToMap(1,'map',center,url1);
             //addStyleToMap('map',center,"https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/MN-snowfall-201612.json");
 
         } else {
@@ -196,7 +198,7 @@ function initMap() {
             var center=JsonlatlongObject2;
             var url2 = "https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/"+state2+"-snowfall-"+year+month+".json";
             console.log(url2);
-            addStyleToMap('map2',center,url2);
+            addStyleToMap(2, 'map2',center,url2);
             //addStyleToMap('map2',JsonlatlongObject2,"https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/WI-snowfall-201612.json");
         } else {
             console.log("Geocode was not successful for the following reason: " + status);
