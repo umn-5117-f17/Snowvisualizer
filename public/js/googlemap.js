@@ -25,7 +25,7 @@ function initMap() {
 
       map.data.addListener('click', function(event) {
              var myHTML = event.feature.getProperty("Description");
-             console.log(event.feature.getProperty("Description"));
+          //   console.log(event.feature.getProperty("Description"));
          infowindow.setContent("<div style='width:150px; text-align: center;'>"+myHTML+"</div>");
          infowindow.setPosition(event.feature.getGeometry().get());
          infowindow.setOptions({pixelOffset: new google.maps.Size(0,-30)});
@@ -53,10 +53,8 @@ function initMap() {
             var test = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,61.5171]}},{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,63]}}]}';
             var testJson = JSON.parse(testSnow);
             var jData = eqfeed_callback(map,testJson);
-            console.log(testJson["features"]);
+            // console.log(testJson["features"]);
             packDataToLocation(dataSource);
-            // script.setAttribute('src',jData);
-            // document.getElementsByTagName('head')[0].appendChild(script);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert(errorThrown);
@@ -69,15 +67,6 @@ function initMap() {
     dataLocal = data;
   }
   function parseSnowData(dataSource,daybegin,dayend) {
-    var maxSnowF = 0;
-    // $.each(dataSource, function(i, n){
-    //     $.each(n["values"], function(j, m){
-    //         // console.log("maxsnowf: " + m);
-    //         maxSnowF = parseFloat(m)>maxSnowF ? parseFloat(m) : maxSnowF;
-    //     });
-    // });
-    //
-    // console.log("maxsnowf: " + maxSnowF);
     var snowMapJson = '{"type":"FeatureCollection","features":[';
     var daybegin = daybegin;
     var dayend = dayend;
@@ -91,7 +80,6 @@ function initMap() {
           if(isNaN(temp)){temp = 0.0;}
           magVal = magVal + temp;
         }
-        console.log(magVal,dayend-daybegin);
         magVal = magVal/ (dayend-daybegin);
         if(isNaN(magVal)){
             magVal = 0.0;
@@ -104,8 +92,6 @@ function initMap() {
         ii++;
         if(ii==2000) return false;
     });
-    console.log(i1 + "---" + i2 + '----' + i3);
-
     snowMapJson = snowMapJson.substring(0, snowMapJson.length-1);
     snowMapJson += ']}';
     return snowMapJson;
@@ -184,9 +170,6 @@ function initMap() {
             JsonlatlongObject = JSON.parse(Jsonlatlong);
             var center=JsonlatlongObject;
             addStyleToMap('map',center,"https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/MN-snowfall-201612.json");
-            console.log(center);
-            // console.log(results[0]);
-            // console.log(results[1]);
         } else {
             console.log("Geocode was not successful for the following reason: " + status);
         }
@@ -202,8 +185,6 @@ function initMap() {
             JsonlatlongObject2 = JSON.parse(Jsonlatlong2);
             var center=JsonlatlongObject2;
             addStyleToMap('map2',JsonlatlongObject2,"https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/WI-snowfall-201612.json");
-            console.log(center);
-            // console.log(results2[0]);
         } else {
             console.log("Geocode was not successful for the following reason: " + status);
         }
