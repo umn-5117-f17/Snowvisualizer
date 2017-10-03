@@ -2,23 +2,40 @@ $(function(){
 
 function initMap() {
 
-  var myCenter1;// = {lat: 46.413, lng: -94.504};
+  var myCenter1 = {lat: 46.413, lng: -94.504};
   var myCenter2;
+  var dataLocal = null;
   initializeCenter("Minnesota","Wisconsin");
-  console.log(myCenter2);
+  //console.log(myCenter2);
  //Draw Map 1
 
   function addStyleToMap(mapLabel,center,url){
     var map;
-    console.log("Center="+center);
+    //console.log("Center="+center);
     map = new google.maps.Map(document.getElementById(mapLabel), {
       center: center, // This needs a json for lat long {lat: 46.413, lng: -94.504}
       zoom: 6,
       styles: mapStyle
     });
     map.data.setStyle(styleFeature);
-    populateMap(map,url);
-  }
+    var infowindow = new google.maps.InfoWindow();
+    google.maps.event.addListener(map,'click',function() {
+          infowindow.close();
+      });
+
+      map.data.addListener('click', function(event) {
+             var myHTML = event.feature.getProperty("Description");
+             console.log(event.feature.getProperty("Description"));
+         infowindow.setContent("<div style='width:150px; text-align: center;'>"+myHTML+"</div>");
+         infowindow.setPosition(event.feature.getGeometry().get());
+         infowindow.setOptions({pixelOffset: new google.maps.Size(0,-30)});
+         infowindow.open(map);
+     });
+     populateMap(map,url);
+   }
+
+
+
   function populateMap(map,url){
     var snowUrl = url;
     var map = map;
@@ -31,11 +48,13 @@ function initMap() {
             dataSource = data.data;
             dataDesc = data.description;
             snowDisp = parseSnowData(dataSource);
+            dataLocal = dataSource;
             var testSnow = snowDisp;
             var test = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,61.5171]}},{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,63]}}]}';
             var testJson = JSON.parse(testSnow);
             var jData = eqfeed_callback(map,testJson);
             console.log(testJson["features"]);
+            packDataToLocation(dataSource);
             // script.setAttribute('src',jData);
             // document.getElementsByTagName('head')[0].appendChild(script);
         },
@@ -43,6 +62,11 @@ function initMap() {
             alert(errorThrown);
         }
     });
+  }
+
+  function packDataToLocation(data)
+  {
+    dataLocal = data;
   }
   function parseSnowData(dataSource) {
     var maxSnowF = 0;
@@ -152,8 +176,8 @@ function initMap() {
             var center=JsonlatlongObject;
             addStyleToMap('map',center,"https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/MN-snowfall-201612.json");
             console.log(center);
-            console.log(results[0]);
-            console.log(results[1]);
+            // console.log(results[0]);
+            // console.log(results[1]);
         } else {
             console.log("Geocode was not successful for the following reason: " + status);
         }
@@ -166,11 +190,11 @@ function initMap() {
 
         if (status == google.maps.GeocoderStatus.OK) {
             Jsonlatlong2+='{"lat":' + results2[0].geometry.location.lat() + ', "lng":'+ results2[0].geometry.location.lng()+'}';
-            JsonlatlongObject2 = JSON.parse(Jsonlatlong);
+            JsonlatlongObject2 = JSON.parse(Jsonlatlong2);
             var center=JsonlatlongObject2;
             addStyleToMap('map2',JsonlatlongObject2,"https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/WI-snowfall-201612.json");
             console.log(center);
-            console.log(results2[0]);
+            // console.log(results2[0]);
         } else {
             console.log("Geocode was not successful for the following reason: " + status);
         }
