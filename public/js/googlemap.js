@@ -20,23 +20,30 @@ function initMap() {
           infowindow.close();
       });
 
-      map.data.addListener('click', function(event) {
-             var myHTML = event.feature.getProperty("Description");
-          //   console.log(event.feature.getProperty("Description"));
-         infowindow.setContent("<div style='width:150px; text-align: center;'>"+myHTML+"</div>");
-         infowindow.setPosition(event.feature.getGeometry().get());
-         infowindow.setOptions({pixelOffset: new google.maps.Size(0,-30)});
-         infowindow.open(map);
-     });
      populateMap(map,url,1,28);
+     map.data.addListener('click', function(event) {
+       var myHTML = event.feature.getProperty("stationName");
+       infowindow.close();
+       infowindow.setContent("<div style='width:150px; text-align: center; color: black;'>"+myHTML+"</div>");
+       infowindow.setPosition(event.feature.getGeometry().get());
+       infowindow.setOptions({pixelOffset: new google.maps.Size(0,-30)});
+       infowindow.open(map);
+    });
    }
 
   function refresh(begindate,enddate){
       var url2 = "https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/"+state2+"-snowfall-"+year+month+".json";
       var url1 = "https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/"+state1+"-snowfall-"+year+month+".json";
 
+      infowindow.close();
+    }
 
-  }
+
+
+  //   populateMap(map,url,1,28);
+  //  }
+
+  //}
 
   function populateMap(map,url,begindate,enddate){
     var snowUrl = url;
@@ -52,7 +59,7 @@ function initMap() {
             snowDisp = parseSnowData(dataSource,begindate,enddate);
             dataLocal = dataSource;
             var testSnow = snowDisp;
-            var test = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,61.5171]}},{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,63]}}]}';
+            //var test = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,61.5171]}},{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,63]}}]}';
             var testJson = JSON.parse(testSnow);
             var jData = eqfeed_callback(map,testJson);
             // console.log(testJson["features"]);
@@ -89,7 +96,10 @@ function initMap() {
         else if(magVal>=1 && magVal<5) i2++;
         else if(magVal>5) i3++;
         magVal = magVal*3 + 2;
-        snowMapJson += '{"type":"Feature","properties":{"mag":' + magVal + '}, "geometry":{"type":"Point","coordinates":[' + n["lon"] + "," + n["lat"] + ']}},';
+        var jsonObj = {};
+        jsonObj["stationName"] = n["station_name"];
+        jsonObj["mag"] = magVal;
+        snowMapJson += '{"type":"Feature","properties": '+JSON.stringify(jsonObj)+', "geometry":{"type":"Point","coordinates":[' + n["lon"] + "," + n["lat"] + ']}},';
         ii++;
         if(ii==2000) return false;
     });
@@ -191,7 +201,7 @@ function initMap() {
             var center=JsonlatlongObject2;
             var url2 = "https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/"+state2+"-snowfall-"+year+month+".json";
             console.log(url2);
-            addStyleToMap('map',center,url2);
+            addStyleToMap('map2',center,url2);
             //addStyleToMap('map2',JsonlatlongObject2,"https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/WI-snowfall-201612.json");
         } else {
             console.log("Geocode was not successful for the following reason: " + status);
