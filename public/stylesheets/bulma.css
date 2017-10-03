@@ -2390,11 +2390,6 @@ a.box:active {
   text-align: left;
 }
 
-.table tr:hover {
-  background-color: #f5f7fa;
-  color: #222324;
-}
-
 .table thead td,
 .table thead th {
   border-width: 0 0 2px;

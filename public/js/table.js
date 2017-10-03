@@ -1,39 +1,33 @@
 $(function(){
-  //console.log('The Javascript is loaded');
-  //alert(state);
-  /*$.get( "/submit", function( data ) {
-  alert(data);
-});*/
+  var graphData1 = {};
+  var graphData2 = {};
 
-  // state and year variables are present now.
-  // Draw a simple graph first
-  //Make calls to the server to extract data
-  //parse the data
-  var graphData = {};
   callNoaa(state1, year, month, 1);
   callNoaa(state2, year, month, 2);
+
   function callNoaa(state, year, month, tableNumber) {
-    // for parse json data to a new format
+
     var snowUrl = "https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/"+state+"-snowfall-"+year+month+".json" ;
+
     $.ajax({
         type: "get",
         url: snowUrl,
         dataType: "json",
         success: function (data) {
             dataSource = data.data;
+            if (state == state1){
+              graphData1 = dataSource;
+            }else{
+              graphData2 = dataSource;
+            }
             dataDesc = data.description;
             snowDisp = parseSnowData(dataSource);
-            snowDisp = snowDisp['monthAvg'];
-            graphData = data.data;
-          //  var testJson = JSON.parse(snowDisp);
+            snowDisp = snowDisp;
             var description = (tableNumber == 1) ?  $("#description1") :  $("#description2");
             description.text(data.description.title) ;
             var table = (tableNumber == 1) ? $('#table1') :  $('#table2');
             $.each(snowDisp, function(idx, elem){
-              //console.log(snowDisp[idx].maxSnowF);
               if(snowDisp[idx].maxSnowF>parseFloat(5)){
-                  //console.log(table);
-                  //table.rows(idx+1).css('background-color', '#FFFF99');
                   table.append("<tr style = 'background-color: #ffffb2'><td>"+(idx+1)+"</td><td>"+snowDisp[idx].station_name+"</td><td>"+snowDisp[idx].average+"</td><td>"+snowDisp[idx].maxSnowF+"</td></tr>");
               }else{
                   table.append("<tr><td>"+(idx+1)+"</td><td>"+snowDisp[idx].station_name+"</td><td>"+snowDisp[idx].average+"</td><td>"+snowDisp[idx].maxSnowF+"</td></tr>");
@@ -46,10 +40,8 @@ $(function(){
     });
   }
 
-
-  // function for parsing snowdata to geo map format
   function parseSnowData(dataSource) {
-    var AvgJson = { "monthAvg" : [], "dayAvg" : [] };         // ?????????????????????/ Remove this logic >>> No longerneeded
+    var AvgJson = [];
     $.each(dataSource, function(i, n){
         var sum = 0.0;
         var days = 0;
@@ -65,8 +57,7 @@ $(function(){
             sum += m;
         });
         average = sum/days;
-        //console.log(average);
-        AvgJson['monthAvg'].push({station_name: n["station_name"] , average: Number((average).toFixed(2)), maxSnowF : maxSnowF })
+        AvgJson.push({station_name: n["station_name"] , average: Number((average).toFixed(2)), maxSnowF : maxSnowF })
     });
     return AvgJson;
   }
@@ -80,111 +71,89 @@ $(function(){
   });
 
   $("#table1").on("click", "tr", function(){
-    $(this).removeAttr('style');    //need to take care of this and remove this soon
+    $(this).removeAttr('style');
     $(this).toggleClass('selected');
-    //var value=$(this).find('td:first').html();
-    //alert(value);
   });
 
   $("#table2").on("click", "tr", function(){
-    $(this).removeAttr('style');    //need to take care of this and remove this soon
+    $(this).removeAttr('style');
     $(this).toggleClass('selected');
-    //var value=$(this).find('td:first').html();
-    //alert(value);
   });
 
-/*
-  $('#visualize').on('click', function(e){
-    console.log("Here");
+  $("#reset1").on("click", function(){
+      $("#table1 tr.selected").each(function(){
+          $(this).toggleClass('selected');
+      });
+  });
+
+  $("#reset2").on("click", function(){
+      $("#table2 tr.selected").each(function(){
+          $(this).toggleClass('selected');
+      });
+  });
+
+  $("#visualize1").click(function() {
     var selected = [];
     $("#table1 tr.selected").each(function(){
-        selected.push($('td:nth-child(2)', this).html());
+      selected.push($('td:nth-child(2)', this).html());
     });
-    alert(selected);
-}); */
+     populateSelected(selected, 1);
+  });
 
-function visualize(table){
+  $("#visualize2").click(function() {
+    var selected = [];
+    $("#table2 tr.selected").each(function(){
+      selected.push($('td:nth-child(2)', this).html());
+    });
+    populateSelected(selected, 2);
+  });
 
+function populateSelected(selected, stateNo){
+  if(selected.length >3 || selected.length ==0 ){
+    var msg = (selected.length ==0 ) ? 'Please select a station':'Please select atmost 3 stations';
+    alert(msg);
+  }else{
+    callGraph(stateNo, selected[0],selected[1],selected[2]);
+    $(".modal").addClass("is-active");
+  }
 }
-$("#visualize1").click(function() {
-  var selected = [];
-  //   show an alert message if more than one.
-  $("#table1 tr.selected").each(function(){
-    selected.push($('td:nth-child(2)', this).html());
-  });
-  if(selected.length>3){
-    alert("Please select atmost 3 stations");
-  }else{
-    callGraph(selected[0],selected[1],selected[2]);
-    $(".modal").addClass("is-active");
-  }
-});
-
-$("#visualize2").click(function() {
-  var selected = [];
-  //   show an alert message if more than one.
-  $("#table2 tr.selected").each(function(){
-    selected.push($('td:nth-child(2)', this).html());
-  });
-  if(selected.length>3){
-    alert("Please select atmost 3 stations");
-  }else{
-    callGraph(selected[0],selected[1],selected[2]);
-    $(".modal").addClass("is-active");
-  }
-});
-
 
 $(".modal-close").click(function() {
    $(".modal").removeClass("is-active");
 });
 
-function callGraph(station1, station2, station3){
-  var station1Data = [];
-  var station2Data = [];
-  var station3Data = [];
-  $.each(graphData, function(idx, elem){
+function callGraph(stateNo, station1, station2, station3){
+  var station1Data = {name : {}, data:[]}; station2Data = {name : {}, data:[]}; station3Data = {name : {}, data:[]};
+  var localGraph = (stateNo == 1)? graphData1 : graphData2;
+  $.each(localGraph, function(idx, elem){
     if(elem['station_name'] == station1){
-        $.each(elem["values"], function(j, m){
-            var obj = [];
-            m = parseFloat(m);
-            if(isNaN(m)){
-                m = 0.0;
-            }
-            var d = new Date(month+","+ parseInt(j)+","+year);
-            obj.push(d.getTime());
-            obj.push(m);
-            station1Data.push(obj);
-        });
+        station1Data.name = elem['station_name'];
+        iterateOverStation(elem["values"], station1Data);
     }
     if(elem['station_name'] == station2){
-        $.each(elem["values"], function(j, m){
-            var obj = [];
-            m = parseFloat(m);
-            if(isNaN(m)){
-                m = 0.0;
-            }
-            var d = new Date(month+","+ parseInt(j)+","+year);
-            obj.push(d.getTime());
-            obj.push(m);
-            station2Data.push(obj);
-        });
+      station2Data.name = elem['station_name'];
+      iterateOverStation(elem["values"], station2Data);
     }
     if(elem['station_name'] == station3){
-        $.each(elem["values"], function(j, m){
-            var obj = [];
-            m = parseFloat(m);
-            if(isNaN(m)){
-                m = 0.0;
-            }
-            var d = new Date(month+","+ parseInt(j)+","+year);
-            obj.push(d.getTime());
-            obj.push(m);
-            station3Data.push(obj);
-        });
+      station3Data.name = elem['station_name'];
+      iterateOverStation(elem["values"], station3Data);
     }
   });
   drawCharts(station1Data, station2Data, station3Data);
+}
+
+function iterateOverStation(values, station){
+  $.each(values, function(j, m){
+      var obj = [];
+      m = parseFloat(m);
+      if(isNaN(m)){
+          m = 0.0;
+      }
+      var d = new Date(month+","+ parseInt(j)+","+year);
+      obj.push(d.getTime());
+      obj.push(m);
+      station.data.push(obj);
+  });
 }
 
 function drawCharts(station1, station2, station3){
@@ -239,38 +208,38 @@ function drawCharts(station1, station2, station3){
 
       series: [{
           type: 'area',
-          name: 'station1',
-          data: station1
+          name: station1.name,
+          data: station1.data
       },
       {
           type: 'area',
-          name: 'station2',
-          data: station2
+          name: station2.name,
+          data: station2.data
       },
       {
           type: 'area',
-          name: 'station3',
-          data: station3
+          name: station3.name,
+          data: station3.data
       }
     ]
   });
 }
 
-  function callSearch(reference, tableNo){
-    var value = reference.val().toUpperCase();
-    var table = (tableNo == 1) ? $('#table1 tr') : $('#table2 tr');
-    table.each(function(index) {
-        if (index !== 0) {
-            $row = $(this);
-            var id = $row.find("td:nth-child(2)").text();
-            if (id.indexOf(value) !== 0) {
-                $row.hide();
-            }
-            else {
-                $row.show();
-            }
-        }
-    });
-  }
+function callSearch(reference, tableNo){
+  var value = reference.val().toUpperCase();
+  var table = (tableNo == 1) ? $('#table1 tr') : $('#table2 tr');
+  table.each(function(index) {
+      if (index !== 0) {
+          $row = $(this);
+          var id = $row.find("td:nth-child(2)").text();
+          if (id.indexOf(value) !== 0) {
+              $row.hide();
+          }
+          else {
+              $row.show();
+          }
+      }
+  });
+}
 
 });

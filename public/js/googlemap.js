@@ -1,7 +1,7 @@
 $(function(){
 
 function initMap() {
-
+  alert(state1+''+state2+''+year+''+month);
   var myCenter1;// = {lat: 46.413, lng: -94.504};
   var myCenter2;
   initializeCenter("Minnesota","Wisconsin");
