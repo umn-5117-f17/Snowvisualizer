@@ -1,79 +1,14 @@
 $(function(){
-
-function initMap() {
-  var dataLocal = null;
-
-  // initializeCenter("Minnesota","Wisconsin");
-  initializeCenter(state1,state2);
-
-  function addStyleToMap(mapLabel,center,url){
-    var map;
-
-    map = new google.maps.Map(document.getElementById(mapLabel), {
-      center: center, // This needs a json for lat long {lat: 46.413, lng: -94.504}
-      zoom: 6,
-      styles: mapStyle
-    });
-    map.data.setStyle(styleFeature);
-    var infowindow = new google.maps.InfoWindow();
-    google.maps.event.addListener(map,'click',function() {
-          infowindow.close();
-      });
-
-     populateMap(map,url,1,28);
-     map.data.addListener('click', function(event) {
-       var myHTML = event.feature.getProperty("stationName");
-       infowindow.close();
-       infowindow.setContent("<div style='width:150px; text-align: center; color: black;'>"+myHTML+"</div>");
-       infowindow.setPosition(event.feature.getGeometry().get());
-       infowindow.setOptions({pixelOffset: new google.maps.Size(0,-30)});
-       infowindow.open(map);
-    });
-   }
-
-  function refresh(begindate,enddate){
-      var url2 = "https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/"+state2+"-snowfall-"+year+month+".json";
-      var url1 = "https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/"+state1+"-snowfall-"+year+month+".json";
-
-      infowindow.close();
-    }
+  var dataLocal=[];
+  var mapList=[];
 
 
-
-  //   populateMap(map,url,1,28);
-  //  }
-
-  //}
-
-  function populateMap(map,url,begindate,enddate){
-    var snowUrl = url;
-    var map = map;
-    $.ajax({
-        type: "get",
-        url: snowUrl,
-        dataType: "json",
-        jsonp:"callback",
-        success: function (data) {
-            dataSource = data.data;
-            dataDesc = data.description;
-            snowDisp = parseSnowData(dataSource,begindate,enddate);
-            dataLocal = dataSource;
-            var testSnow = snowDisp;
-            //var test = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,61.5171]}},{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,63]}}]}';
-            var testJson = JSON.parse(testSnow);
-            var jData = eqfeed_callback(map,testJson);
-            // console.log(testJson["features"]);
-            packDataToLocation(dataSource);
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert(errorThrown);
-        }
-    });
+  function reset(begindate,enddate){
+    for(var counter=0;counter<=mapList.length; counter++){
+    var jsondata = JSON.parse(parseSnowData(dataLocal[counter],begindate,enddate));
+    var map = mapList[counter];
+    map.data.addGeoJson(jsondata);
   }
-
-  function packDataToLocation(data)
-  {
-    dataLocal = data;
   }
 
   function parseSnowData(dataSource,daybegin,dayend) {
@@ -108,9 +43,69 @@ function initMap() {
     return snowMapJson;
   }
 
-  // Defines the callback function referenced in the jsonp file.
-  function eqfeed_callback(map,data) {
-    map.data.addGeoJson(data);
+function initMap() {
+  // initializeCenter("Minnesota","Wisconsin");
+  initializeCenter(state1,state2);
+
+  function addStyleToMap(mapLabel,center,url){
+    var map;
+
+    map = new google.maps.Map(document.getElementById(mapLabel), {
+      center: center, // This needs a json for lat long {lat: 46.413, lng: -94.504}
+      zoom: 6,
+      styles: mapStyle
+    });
+    map.data.setStyle(styleFeature);
+    var infowindow = new google.maps.InfoWindow();
+    google.maps.event.addListener(map,'click',function() {
+          infowindow.close();
+      });
+
+     populateMap(map,url,1,28);
+     map.data.addListener('click', function(event) {
+       var myHTML = event.feature.getProperty("stationName");
+       infowindow.close();
+       infowindow.setContent("<div style='width:150px; text-align: center; color: black;'>"+myHTML+"</div>");
+       infowindow.setPosition(event.feature.getGeometry().get());
+       infowindow.setOptions({pixelOffset: new google.maps.Size(0,-30)});
+       infowindow.open(map);
+    });
+    mapList.push(map);
+   }
+   // Defines the callback function referenced in the jsonp file.
+   function eqfeed_callback(map,data) {
+     map.data.addGeoJson(data);
+   }
+
+  function populateMap(map,url,begindate,enddate){
+    var snowUrl = url;
+    var map = map;
+    $.ajax({
+        type: "get",
+        url: snowUrl,
+        dataType: "json",
+        jsonp:"callback",
+        success: function (data) {
+            dataSource = data.data;
+            dataDesc = data.description;
+            snowDisp = parseSnowData(dataSource,begindate,enddate);
+            var testSnow = snowDisp;
+            //var test = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,61.5171]}},{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,63]}}]}';
+            var testJson = JSON.parse(testSnow);
+            var jData = eqfeed_callback(map,testJson);
+            packDataToLocation(dataSource);
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert(errorThrown);
+        }
+    });
+  }
+
+
+
+  function packDataToLocation(data)
+  { console.log("called again");
+    dataLocal.push(data);
   }
 
 
@@ -210,6 +205,14 @@ function initMap() {
 
   }
 }
+
+
+
+d3.select('#slider3').call(d3.slider().axis(true).value([1,28]).min(1).max(28).step(1).on("slide", function(evt, value) {
+      d3.select('#slider3textmin').text(value[ 0 ]);
+      d3.select('#slider3textmax').text(value[ 1 ]);
+      reset(value[0],value[1]);
+    }));
 
 var mapsAPI='AIzaSyAyZrx9EmwScpARmLLJLRYgNv1L53v2n0g';
 $.getScript('https://maps.google.com/maps/api/js?key=' + mapsAPI).done(function(){initMap()});
