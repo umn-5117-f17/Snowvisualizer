@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var fs = require('fs')
+var global =  {state1: {}, state2: {}, year:{}, month:{}};
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', data);
@@ -10,13 +10,20 @@ router.get('/rangeSlider', function(req, res, next) {
   res.render('rangeSlider',{ title: 'Express' });
 });
 
+router.get('/table', function(req, res, next) {
+  res.render('table', { state1 : global.state1 ,  state2 : global.state2, year : global.year, month :global.month });
+});
+
 router.get('/map', function(req, res, next) {
-  res.render('googlemap', { title: 'Express' });
+  res.render('googlemap', { state1 : global.state1 ,  state2 : global.state2, year : global.year, month :global.month });
 });
 
 router.post('/submit',  function(req, res, next){
-  console.log(req);
-  res.render('table',  { state1 : req.body.state1 ,  state2 : req.body.state2, year : req.body.year, month :req.body.month });
+  global.state1 = req.body.state1;
+  global.state2 = req.body.state2;
+  global.month = req.body.month;
+  global.year = req.body.year;
+  res.render('googlemap',  { state1 : req.body.state1 ,  state2 : req.body.state2, year : req.body.year, month :req.body.month });
 });
 
 module.exports = router;

@@ -66,13 +66,12 @@ function initMap() {
   {
     dataLocal = data;
   }
+
   function parseSnowData(dataSource,daybegin,dayend) {
     var snowMapJson = '{"type":"FeatureCollection","features":[';
-    var daybegin = daybegin;
-    var dayend = dayend;
+    var day = 9;
     var ii = 0;
     var i1 = 0, i2 = 0, i3 = 0;
-
     $.each(dataSource, function(i, n){
         var day = 0;var magVal=0.0;
         for(day = daybegin;day <= dayend; day++){
