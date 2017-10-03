@@ -1,17 +1,14 @@
 $(function(){
 
 function initMap() {
-
-  var myCenter1 = {lat: 46.413, lng: -94.504};
-  var myCenter2;
   var dataLocal = null;
-  initializeCenter("Minnesota","Wisconsin");
-  //console.log(myCenter2);
- //Draw Map 1
+
+  // initializeCenter("Minnesota","Wisconsin");
+  initializeCenter(state1,state2);
 
   function addStyleToMap(mapLabel,center,url){
     var map;
-    //console.log("Center="+center);
+
     map = new google.maps.Map(document.getElementById(mapLabel), {
       center: center, // This needs a json for lat long {lat: 46.413, lng: -94.504}
       zoom: 6,
@@ -34,7 +31,12 @@ function initMap() {
      populateMap(map,url,1,28);
    }
 
+  function refresh(begindate,enddate){
+      var url2 = "https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/"+state2+"-snowfall-"+year+month+".json";
+      var url1 = "https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/"+state1+"-snowfall-"+year+month+".json";
 
+
+  }
 
   function populateMap(map,url,begindate,enddate){
     var snowUrl = url;
@@ -168,7 +170,11 @@ function initMap() {
             Jsonlatlong+='{"lat":' + results[0].geometry.location.lat() + ', "lng":'+ results[0].geometry.location.lng()+'}';
             JsonlatlongObject = JSON.parse(Jsonlatlong);
             var center=JsonlatlongObject;
-            addStyleToMap('map',center,"https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/MN-snowfall-201612.json");
+            var url1 = "https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/"+state1+"-snowfall-"+year+month+".json";
+            console.log(url1);
+            addStyleToMap('map',center,url1);
+            //addStyleToMap('map',center,"https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/MN-snowfall-201612.json");
+
         } else {
             console.log("Geocode was not successful for the following reason: " + status);
         }
@@ -183,7 +189,10 @@ function initMap() {
             Jsonlatlong2+='{"lat":' + results2[0].geometry.location.lat() + ', "lng":'+ results2[0].geometry.location.lng()+'}';
             JsonlatlongObject2 = JSON.parse(Jsonlatlong2);
             var center=JsonlatlongObject2;
-            addStyleToMap('map2',JsonlatlongObject2,"https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/WI-snowfall-201612.json");
+            var url2 = "https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/"+state2+"-snowfall-"+year+month+".json";
+            console.log(url2);
+            addStyleToMap('map',center,url2);
+            //addStyleToMap('map2',JsonlatlongObject2,"https://www.ncdc.noaa.gov/snow-and-ice/daily-snow/WI-snowfall-201612.json");
         } else {
             console.log("Geocode was not successful for the following reason: " + status);
         }
