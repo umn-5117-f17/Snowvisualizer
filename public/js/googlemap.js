@@ -1,14 +1,18 @@
 $(function(){
-  var dataLocal=[];
-  var mapList=[];
+  var datalocal1,datalocal2;//dataLocal[];
+  var map1,map2;
 
 
   function reset(begindate,enddate){
-    for(var counter=0;counter<=mapList.length; counter++){
-    var jsondata = JSON.parse(parseSnowData(dataLocal[counter],begindate,enddate));
-    var map = mapList[counter];
-    map.data.addGeoJson(jsondata);
-  }
+    // for(var counter=0;counter<=mapList.length; counter++){
+    //var datalocal=  (counter==0)?dataLocal1:dataLocal2;
+    var jsondata = JSON.parse(parseSnowData(datalocal1,begindate,enddate));
+    //console.log("entered here");
+    //var map = mapList[counter];
+    map1.data.addGeoJson(jsondata);
+    var jsondata2 = JSON.parse(parseSnowData(datalocal2,begindate,enddate));
+    map2.data.addGeoJson(jsondata2);
+  //}
   }
 
   function parseSnowData(dataSource,daybegin,dayend) {
@@ -70,7 +74,7 @@ function initMap() {
        infowindow.setOptions({pixelOffset: new google.maps.Size(0,-30)});
        infowindow.open(map);
     });
-    mapList.push(map);
+  //  mapList.push(map);
    }
    // Defines the callback function referenced in the jsonp file.
    function eqfeed_callback(map,data) {
@@ -95,7 +99,9 @@ function initMap() {
             //var test = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,61.5171]}},{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,63]}}]}';
             var testJson = JSON.parse(testSnow);
             var jData = eqfeed_callback(map,testJson);
-            packDataToLocation(dataSource);
+            (stateNo == 1)? (datalocal1=dataSource):(datalocal2=dataSource);
+            (stateNo == 1)? (map1=map):(map2=map);
+            //packDataToLocation(dataSource);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert(errorThrown);
@@ -105,10 +111,10 @@ function initMap() {
 
 
 
-  function packDataToLocation(data)
-  { console.log("called again");
-    dataLocal.push(data);
-  }
+  // function packDataToLocation(data)
+  // { console.log("called again");
+  //   dataLocal.push(data);
+  // }
 
 
   function styleFeature(feature) {
