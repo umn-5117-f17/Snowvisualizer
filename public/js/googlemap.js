@@ -31,12 +31,12 @@ function initMap() {
          infowindow.setOptions({pixelOffset: new google.maps.Size(0,-30)});
          infowindow.open(map);
      });
-     populateMap(map,url);
+     populateMap(map,url,1,28);
    }
 
 
 
-  function populateMap(map,url){
+  function populateMap(map,url,begindate,enddate){
     var snowUrl = url;
     var map = map;
     $.ajax({
@@ -47,7 +47,7 @@ function initMap() {
         success: function (data) {
             dataSource = data.data;
             dataDesc = data.description;
-            snowDisp = parseSnowData(dataSource,1,28);
+            snowDisp = parseSnowData(dataSource,begindate,enddate);
             dataLocal = dataSource;
             var testSnow = snowDisp;
             var test = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,61.5171]}},{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,63]}}]}';
