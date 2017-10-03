@@ -4,45 +4,28 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="../stylesheets/bulma.css">
-    <link rel="stylesheet" type="text/css" href="../stylesheets/base.css">
     <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
 </head>
 <nav class="nav">
   <div class="nav-left">
     <a class="nav-item">
-      <img src="" alt="##Snow Vizualizer 1.0">
+      <span class="icon"><i class="fa fa-snowflake-o" aria-hidden="true"></i></span><img src="" alt="SnowVisualizer">
     </a>
   </div>
-
   <div class="nav-center">
-    <a class="nav-item">
-      <span class="icon">
-        <i class="fa fa-github"></i>
-      </span>
-    </a>
-  <!-- This "nav-toggle" hamburger menu is only visible on mobile -->
-  <!-- You need JavaScript to toggle the "is-active" class on "nav-menu" -->
   <span class="nav-toggle">
     <span></span>
     <span></span>
     <span></span>
   </span>
-
-  <!-- This "nav-menu" is hidden on mobile -->
-  <!-- Add the modifier "is-active" to display it on mobile -->
   <div class="nav-right nav-menu">
-    <a class="nav-item">
-      Table
+    <a href="/map" class="nav-item">
+      <span class="icon">
+        <i class="fa fa-map-o"></i>
+      </span>MapView
     </a>
-    <a class="nav-item">
-      Graph
-    </a>
-    <a class="nav-item">
-      Map
-    </a>
-
   </div>
 </nav>
 <body>
@@ -61,8 +44,9 @@
     <script src="/js/table.js" charset="utf-8"></script>
     <div class="columns">
          <div class="column">
-           <p class="notification is-success" id="description1" ></p>
-           <center><button id="visualize1" class="button is-danger is-small">Visualize Selected Stations</button></center><br/>
+           <p class="notification is-success" id="description1" > </span></p>
+           <center><button id="visualize1" class="button is-danger is-small"><span class="icon"><i class="fa fa-area-chart"></i></span>Visualize Selected Stations</button>
+             <button id="reset1" class="button is-info is-small"><span class="icon"> <i class="fa fa-undo"></i> </span>  reset</button></center><br/>
            <div class="modal">
             <div class="modal-background"></div>
             <div class="modal-content">
@@ -89,8 +73,9 @@
            </div>
          </div>
          <div class="column">
-           <p class="notification is-info" id="description2" ></p>
-           <center><button id="visualize2" class="button is-danger is-small">Visualize Selected Stations</button></center><br/>
+           <p class="notification is-info" id="description2"></p>
+           <center><button id="visualize2" class="button is-danger is-small"><span class="icon"><i class="fa fa-area-chart"></i></span>Visualize Selected Stations</button>
+             <button id="reset2" class="button is-info is-small"><span class="icon"> <i class="fa fa-undo"></i> </span>  reset</button></center><br/>
            <div>
              <div class="is-vcentered">
                <div class="is-offset-0">

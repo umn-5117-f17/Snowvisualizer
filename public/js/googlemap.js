@@ -68,31 +68,22 @@ function initMap() {
   {
     dataLocal = data;
   }
-  function parseSnowData(dataSource,daybegin,dayend) {
+  function parseSnowData(dataSource) {
     var maxSnowF = 0;
-    // $.each(dataSource, function(i, n){
-    //     $.each(n["values"], function(j, m){
-    //         // console.log("maxsnowf: " + m);
-    //         maxSnowF = parseFloat(m)>maxSnowF ? parseFloat(m) : maxSnowF;
-    //     });
-    // });
-    //
-    // console.log("maxsnowf: " + maxSnowF);
+    $.each(dataSource, function(i, n){
+        $.each(n["values"], function(j, m){
+            // console.log("maxsnowf: " + m);
+            maxSnowF = parseFloat(m)>maxSnowF ? parseFloat(m) : maxSnowF;
+        });
+    });
+
+    console.log("maxsnowf: " + maxSnowF);
     var snowMapJson = '{"type":"FeatureCollection","features":[';
-    var daybegin = daybegin;
-    var dayend = dayend;
+    var day = 9;
     var ii = 0;
     var i1 = 0, i2 = 0, i3 = 0;
-
     $.each(dataSource, function(i, n){
-        var day = 0;var magVal=0.0;
-        for(day = daybegin;day <= dayend; day++){
-          var temp = parseFloat(n["values"][day]);
-          if(isNaN(temp)){temp = 0.0;}
-          magVal = magVal + temp;
-        }
-        console.log(magVal,dayend-daybegin);
-        magVal = magVal/ (dayend-daybegin);
+        var magVal = parseFloat(n["values"][day]);
         if(isNaN(magVal)){
             magVal = 0.0;
         }
