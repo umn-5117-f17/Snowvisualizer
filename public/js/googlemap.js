@@ -47,7 +47,7 @@ function initMap() {
         success: function (data) {
             dataSource = data.data;
             dataDesc = data.description;
-            snowDisp = parseSnowData(dataSource);
+            snowDisp = parseSnowData(dataSource,1,28);
             dataLocal = dataSource;
             var testSnow = snowDisp;
             var test = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,61.5171]}},{"type":"Feature","properties":{"mag":1.3}, "geometry":{"type":"Point","coordinates":[-140.8051,63]}}]}';
@@ -68,22 +68,31 @@ function initMap() {
   {
     dataLocal = data;
   }
-  function parseSnowData(dataSource) {
+  function parseSnowData(dataSource,daybegin,dayend) {
     var maxSnowF = 0;
-    $.each(dataSource, function(i, n){
-        $.each(n["values"], function(j, m){
-            // console.log("maxsnowf: " + m);
-            maxSnowF = parseFloat(m)>maxSnowF ? parseFloat(m) : maxSnowF;
-        });
-    });
-
-    console.log("maxsnowf: " + maxSnowF);
+    // $.each(dataSource, function(i, n){
+    //     $.each(n["values"], function(j, m){
+    //         // console.log("maxsnowf: " + m);
+    //         maxSnowF = parseFloat(m)>maxSnowF ? parseFloat(m) : maxSnowF;
+    //     });
+    // });
+    //
+    // console.log("maxsnowf: " + maxSnowF);
     var snowMapJson = '{"type":"FeatureCollection","features":[';
-    var day = 9;
+    var daybegin = daybegin;
+    var dayend = dayend;
     var ii = 0;
     var i1 = 0, i2 = 0, i3 = 0;
+
     $.each(dataSource, function(i, n){
-        var magVal = parseFloat(n["values"][day]);
+        var day = 0;var magVal=0.0;
+        for(day = daybegin;day <= dayend; day++){
+          var temp = parseFloat(n["values"][day]);
+          if(isNaN(temp)){temp = 0.0;}
+          magVal = magVal + temp;
+        }
+        console.log(magVal,dayend-daybegin);
+        magVal = magVal/ (dayend-daybegin);
         if(isNaN(magVal)){
             magVal = 0.0;
         }
