@@ -40,7 +40,11 @@
     <script>
       var state1 = "{{ state1 }}" ; var state2 = "{{ state2 }}"; var year = "{{ year }}" ;  var month = "{{ month }}";
     </script>
-    <script src="/js/table.js" charset="utf-8"></script>
+    <script src="/js/table.js" charset="utf-8"></script><br/>
+    <center><span class="tag"><br/>
+     Select the stations from the respective tables to visualize the snowfall data over the entire month.<br/>
+     The station that are highlighted in yellow are the ones where the maximum snowfall for the month is greater than 5 inches.<br/>
+</span></center><br/>
     <div class="columns">
          <div class="column">
            <p class="notification is-success" id="description1" > </span></p>
@@ -73,8 +77,8 @@
          </div>
          <div class="column">
            <p class="notification is-info" id="description2"></p>
-           <center><button id="visualize2" class="button is-danger is-small"><span class="icon"><i class="fa fa-area-chart"></i></span>Visualize Selected Stations</button>
-             <button id="reset2" class="button is-info is-small"><span class="icon"> <i class="fa fa-undo"></i> </span>  reset</button></center><br/>
+           <center><button data-tooltip="Tooltip Text" id="visualize2" class="button is-danger is-small"><span class="icon"><i class="fa fa-area-chart"></i></span>Visualize Selected Stations</button>
+             <button data-tooltip="Tooltip Text" id="reset2" class="button is-info is-small"><span class="icon"> <i class="fa fa-undo"></i> </span>  reset</button></center><br/>
            <div>
              <div class="is-vcentered">
                <div class="is-offset-0">

@@ -45,16 +45,8 @@ var data = {
   ],
   "states": [
     {
-        "name": "Alabama",
-        "abbreviation": "AL"
-    },
-    {
         "name": "Alaska",
         "abbreviation": "AK"
-    },
-    {
-        "name": "American Samoa",
-        "abbreviation": "AS"
     },
     {
         "name": "Arizona",
@@ -81,24 +73,12 @@ var data = {
         "abbreviation": "DE"
     },
     {
-        "name": "District Of Columbia",
-        "abbreviation": "DC"
-    },
-    {
-        "name": "Federated States Of Micronesia",
-        "abbreviation": "FM"
-    },
-    {
         "name": "Florida",
         "abbreviation": "FL"
     },
     {
         "name": "Georgia",
         "abbreviation": "GA"
-    },
-    {
-        "name": "Guam",
-        "abbreviation": "GU"
     },
     {
         "name": "Hawaii",
@@ -135,10 +115,6 @@ var data = {
     {
         "name": "Maine",
         "abbreviation": "ME"
-    },
-    {
-        "name": "Marshall Islands",
-        "abbreviation": "MH"
     },
     {
         "name": "Maryland",
@@ -201,10 +177,6 @@ var data = {
         "abbreviation": "ND"
     },
     {
-        "name": "Northern Mariana Islands",
-        "abbreviation": "MP"
-    },
-    {
         "name": "Ohio",
         "abbreviation": "OH"
     },
@@ -217,16 +189,8 @@ var data = {
         "abbreviation": "OR"
     },
     {
-        "name": "Palau",
-        "abbreviation": "PW"
-    },
-    {
         "name": "Pennsylvania",
         "abbreviation": "PA"
-    },
-    {
-        "name": "Puerto Rico",
-        "abbreviation": "PR"
     },
     {
         "name": "Rhode Island",
