@@ -57,18 +57,12 @@ https://fathomless-forest-33607.herokuapp.com
 
 ## External Dependencies
 
-**Document integrations with 3rd Party code or services here.
-Please do not document required libraries (e.g., Express, Bulma).**
+**Document integrations with 3rd Party code or services here.**
 
 * Highcharts : Used to visualize data of staions in table View.
 * google map api : Used to vizualize data over maps.
 * d3 Slider : Used from https://github.com/MasterMaps/d3-slider to implement the slider.
 
-**If there's anything else you would like to disclose about how your project
-relied on external code, expertise, or anything else, please disclose that
-here:**
-
-...
 
 
 ## Links to Test Data
