@@ -9,6 +9,11 @@ $(function(){
     var jsondata = JSON.parse(parseSnowData(datalocal1,begindate,enddate));
     //console.log("entered here");
     //var map = mapList[counter];
+    map1.data.forEach(function(feature) {
+       //filter...
+        map1.data.remove(feature);
+    });
+    
     map1.data.addGeoJson(jsondata);
     var jsondata2 = JSON.parse(parseSnowData(datalocal2,begindate,enddate));
     map2.data.addGeoJson(jsondata2);
@@ -77,8 +82,9 @@ function initMap() {
   //  mapList.push(map);
    }
    // Defines the callback function referenced in the jsonp file.
+   var feature ;
    function eqfeed_callback(map,data) {
-     map.data.addGeoJson(data);
+     feature = map.data.addGeoJson(data);
    }
 
   function populateMap(stateNo, map,url,begindate,enddate){
@@ -215,12 +221,18 @@ function initMap() {
 }
 
 
-
+var var1 , var2;
 d3.select('#slider3').call(d3.slider().axis(true).value([1,28]).min(1).max(28).step(1).on("slide", function(evt, value) {
+      var1 = value[0];
+      var2 = value[1];
       d3.select('#slider3textmin').text(value[ 0 ]);
       d3.select('#slider3textmax').text(value[ 1 ]);
-      reset(value[0],value[1]);
+      //reset(value[0],value[1]);
     }));
+$("#play").on("click", function(){
+  reset(var1,var2);
+});
+
 
 var mapsAPI='AIzaSyAyZrx9EmwScpARmLLJLRYgNv1L53v2n0g';
 $.getScript('https://maps.google.com/maps/api/js?key=' + mapsAPI).done(function(){initMap()});
