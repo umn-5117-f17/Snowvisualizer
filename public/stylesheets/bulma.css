@@ -2162,7 +2162,7 @@ a.box:active {
 
 .notification .subtitle,
 .notification .title {
-  color: inherit;
+  color: black;
 }
 
 .notification.is-white {
