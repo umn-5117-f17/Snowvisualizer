@@ -39,7 +39,7 @@ https://fathomless-forest-33607.herokuapp.com
 **[Add a screenshot of each key page (maximum 4)](https://stackoverflow.com/questions/10189356/how-to-add-screenshot-to-readmes-in-github-repository)
 along with a very brief caption:**
 
-![](https://media.giphy.com/media/gJIJjrdhO5OYo/giphy.gif)
+![](https://github.com/umn-5117-f17/module-1-group-assignment-daredevils/blob/master/public/screenshots/screen1.png)
 
 
 ## External Dependencies
