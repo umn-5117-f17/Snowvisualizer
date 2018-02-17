@@ -1,32 +1,24 @@
-# Module 1 Group Assignment: The Describerator
+# SnowVisualizer
 
-CSCI 5117, Fall 2017
+Done as part of CSCI 5117, Fall 2017
 
 [Assignment description](https://docs.google.com/document/d/1956Z3EZJi9RWU6JqPHEh5ZZBmDOKFex-HtsBLz66tt4/edit#)
-
-Please fill out all of the following sections to help us grade your submission:
 
 
 ## Name of App: Snow Visualizer
 
-
 ## Name of Team: DareDevils
-
 
 ## Students
 
 * Rahul Bora, bora0072@umn.edu
 * Kiran Ravindra, ravin047@umn.edu
 
-
 ## Link to Site
 
 https://fathomless-forest-33607.herokuapp.com
 
 ## Key Features
-
-**Describe the most challenging features you implemented
-(one sentence per bullet, maximum 4 bullets):**
 
 * Parsing the Json data from the NOAA (National Oceanic and Atmospheric Administration | US Department of Commerce) servers and visualizing it.
 * Creating custom algorithims to calculate the average over given date range and dynamically change the intensity of the points in google map and also in the table view.
